@@ -36,7 +36,7 @@ const FooterCom = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    100 JS Projects
+                    100 Javascript Projects
                   </Footer.Link>
                   <Footer.Link
                     href="/about"
