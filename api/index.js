@@ -24,6 +24,15 @@ app.listen(3000, () => {
   console.log(`server is listening to port 3000`);
 });
 
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || 'Internal Server Error';
+  res.status(statusCode).send({
+    success: false,
+    statusCode,
+    message,
+  });
+});
 // username:imedward171
 // password:ikC7FNRG05s7pKPV
 // mongodb+srv://imedward171:ikC7FNRG05s7pKPV@mernblog.3smz0y1.mongodb.net/
