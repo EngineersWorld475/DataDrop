@@ -18,7 +18,7 @@ const Header = () => {
           to="/"
           className="self-center whitespace-nowrap text-sm sm:text-sl font-semibold dark:text-white"
         >
-          <span className="px-2 py-1 bg-gradient-to-r from-red-700 via-red-600 to-red-500 rounded-lg text-white">
+          <span className="px-2 py-1 bg-gradient-to-r from-red-700 via-red-600 to-red-500 rounded-lg text-white font-bold">
             Data
           </span>
           Drop
