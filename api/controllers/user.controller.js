@@ -4,7 +4,7 @@ import bcryptjs from 'bcryptjs';
 
 export const testController = (req, res) => {
   try {
-    res.json({ message: 'Api connected' });
+    res.json({ message: 'Api connected successfully' });
   } catch (error) {
     console.log(error);
   }
