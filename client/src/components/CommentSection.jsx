@@ -1,12 +1,14 @@
 import { Alert, Button, Textarea } from 'flowbite-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import Comment from './Comment';
 const CommentSection = ({ postId }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [comment, setComment] = useState('');
   const [commentError, setCommentError] = useState(null);
-
+  const [comments, setComments] = useState([]);
+  console.log('comments', comments);
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -22,15 +24,32 @@ const CommentSection = ({ postId }) => {
           postId,
         }),
       });
-      const data = res.json();
+      const data = await res.json();
       if (res.ok) {
         setComment('');
         setCommentError(null);
+        setComments([data, ...comments]);
       }
     } catch (error) {
       setCommentError(error.message);
     }
   };
+
+  useEffect(() => {
+    const getComments = async () => {
+      try {
+        const res = await fetch(`/api/comment/getPostComments/${postId}`);
+        if (res.ok) {
+          const data = await res.json();
+
+          setComments(data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getComments();
+  }, [postId]);
   return (
     <div className="mx-auto">
       {currentUser ? (
@@ -65,13 +84,13 @@ const CommentSection = ({ postId }) => {
             type="text"
             placeholder="Add a comment"
             rows="3"
-            maxLength={200}
+            maxLength={150}
             onChange={(e) => setComment(e.target.value)}
             value={comment}
           />
           <div className="flex justify-between items-center mt-5">
             <p className="text-gray-500 text-sm">
-              {200 - comment.length} characters remaining
+              {150 - comment.length} characters remaining
             </p>
             <Button outline gradientDuoTone="purpleToBlue" type="submit">
               Submit
@@ -84,6 +103,21 @@ const CommentSection = ({ postId }) => {
             </Alert>
           )}
         </form>
+      )}
+      {comments.length === 0 ? (
+        <p className="text-sm my-3">No comments yet!</p>
+      ) : (
+        <>
+          <div className="flex flex-row justify-center items-center gap-2">
+            <p>Comments</p>
+            <div className="border border-gray-500 py-0.5 px-2 text-sm rounded-full">
+              <p>{comments.length}</p>
+            </div>
+          </div>
+          {comments.map((comment) => {
+            return <Comment key={comment._id} comment={comment} />;
+          })}
+        </>
       )}
     </div>
   );
