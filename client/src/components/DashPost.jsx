@@ -28,7 +28,7 @@ const DashPost = () => {
       {currentUser.isAdmin && userPosts.length > 0 ? (
         <>
           <Table hoverable className="shadow-md">
-            <Table.Head>
+            <Table.Head className="text-center">
               <Table.HeadCell>DATE UPDATED</Table.HeadCell>
               <Table.HeadCell>POST IMAGE</Table.HeadCell>
               <Table.HeadCell>POST TITLE</Table.HeadCell>
@@ -54,7 +54,7 @@ const DashPost = () => {
                         />
                       </Link>
                     </Table.Cell>
-                    <Table.Cell>
+                    <Table.Cell className="text-center">
                       <Link to={`/post/${post.slug}`} className="font-medium">
                         {post.title}
                       </Link>
