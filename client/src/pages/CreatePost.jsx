@@ -2,6 +2,7 @@ import { Alert, Button, FileInput, Select, TextInput } from 'flowbite-react';
 import React, { useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { useNavigate } from 'react-router-dom';
 import {
   getDownloadURL,
   getStorage,
@@ -17,7 +18,8 @@ const CreatePost = () => {
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
-  console.log(formData);
+  const [publishError, setPublishError] = useState(null);
+  const navigate = useNavigate();
   const handleUploadImage = async () => {
     try {
       if (!file) {
@@ -28,9 +30,7 @@ const CreatePost = () => {
       const storage = getStorage(app);
       const fileName = new Date().getTime() + '-' + file.name;
       const storageRef = ref(storage, fileName);
-      console.log('...storageRef', storageRef);
       const uploadTask = uploadBytesResumable(storageRef, file);
-      console.log('...uploadTask', uploadTask);
       uploadTask.on(
         'state_changed',
         (snapshot) => {
@@ -56,10 +56,36 @@ const CreatePost = () => {
       console.log(error);
     }
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(`/api/post/create`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      console.log(data);
+      if (!res.ok) {
+        setPublishError(data.message);
+        return;
+      }
+      if (res.ok) {
+        setPublishError(null);
+        navigate(`/posts/${data.slug}`);
+      }
+    } catch (error) {
+      console.log(error);
+      setPublishError('Something went wrong');
+    }
+  };
   return (
     <div className="min-h-screen p-3 max-w-3xl mx-auto">
       <h1 className="text-center text-3xl my-7 font-semibold">Create Post</h1>
-      <form className="flex flex-col gap-4">
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
           <TextInput
             type="text"
@@ -67,8 +93,15 @@ const CreatePost = () => {
             required
             id="title"
             className="flex-1"
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
           />
-          <Select>
+          <Select
+            onChange={(e) =>
+              setFormData({ ...formData, category: e.target.value })
+            }
+          >
             <option value="uncategorized">Select a category</option>
             <option value="javascript">JavaScript</option>
             <option value="reactjs">React.js</option>
@@ -114,6 +147,7 @@ const CreatePost = () => {
           placeholder="Write something..."
           className="h-72 mb-12"
           required
+          onChange={(value) => setFormData({ ...formData, content: value })}
         />
         <Button
           type="submit"
@@ -122,6 +156,11 @@ const CreatePost = () => {
         >
           Publish
         </Button>
+        {publishError && (
+          <Alert className="mt-5" color="failure">
+            {publishError}
+          </Alert>
+        )}
       </form>
     </div>
   );
