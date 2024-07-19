@@ -132,7 +132,7 @@ const DashUsers = () => {
           )}
         </>
       ) : (
-        <p> You have no posts yet!</p>
+        <p> You have no users yet!</p>
       )}
       <Modal
         show={showModal}

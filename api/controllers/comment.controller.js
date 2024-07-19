@@ -102,3 +102,21 @@ export const deleteComment = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getComments = async (req, res, next) => {
+  try {
+    const limit = req.query.limit || 10;
+    const startIndex = req.query.startIndex || 0;
+    if (!req.user.isAdmin) {
+      return next(errorHandler(403, 'You are not allowed to get all users'));
+    }
+
+    const comments = await Comment.find({})
+      .skip(startIndex)
+      .limit(limit)
+      .sort({ createdAt: -1 });
+    res.status(200).json(comments);
+  } catch (error) {
+    next(error);
+  }
+};
