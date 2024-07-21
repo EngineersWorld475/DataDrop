@@ -21,6 +21,10 @@ const userSchema = mongoose.Schema(
       default:
         'https://storage.needpix.com/rsynced_images/user-1808597_1280.png',
     },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
