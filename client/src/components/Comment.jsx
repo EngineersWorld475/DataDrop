@@ -2,22 +2,16 @@ import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { FaThumbsUp } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
-import { Button, Modal, Textarea } from 'flowbite-react';
-import { HiOutlineExclamationCircle } from 'react-icons/hi';
+import { Button, Textarea } from 'flowbite-react';
 
 const Comment = ({ comment, onLike, onEdit, onDelete }) => {
   const [user, setUser] = useState({});
   const { currentUser } = useSelector((state) => state.user);
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
-  const [openModal, setOpenModal] = useState(false);
 
   const handleEdit = async () => {
     setIsEditing(true);
-  };
-
-  const handleDelete = async () => {
-    setOpenModal(true);
   };
 
   const handleSave = async () => {
@@ -121,7 +115,7 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
                     (comment.numberOfLikes === 1 ? 'like' : 'likes')}
               </p>
               {currentUser &&
-                (currentUser._id === comment._id || currentUser.isAdmin) && (
+                (currentUser._id === comment.userId || currentUser.isAdmin) && (
                   <>
                     <button
                       onClick={handleEdit}
@@ -130,7 +124,7 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
                       Edit
                     </button>
                     <button
-                      onClick={handleDelete}
+                      onClick={() => onDelete(comment._id)}
                       className="text-gray-400 hover:text-red-500"
                     >
                       Delete
@@ -138,28 +132,6 @@ const Comment = ({ comment, onLike, onEdit, onDelete }) => {
                   </>
                 )}
             </div>
-            <Modal show={openModal} onClose={() => setOpenModal(false)} popup>
-              <Modal.Header />
-              <Modal.Body>
-                <div className="text-center">
-                  <HiOutlineExclamationCircle className="h-20 w-20 text-gray-400 dark:text-gray-200 mb-4 mx-auto" />
-                  <h3 className="mb-5 text-lg text-gray-600 dark:text-gray-700">
-                    Are you sure you want to delete this comment
-                  </h3>
-                  <div className="flex justify-center gap-4">
-                    <Button
-                      color="failure"
-                      onClick={() => onDelete(comment._id)}
-                    >
-                      Yes, Im Sure
-                    </Button>
-                    <Button color="gray" onClick={() => setOpenModal(false)}>
-                      No, Cancel
-                    </Button>
-                  </div>
-                </div>
-              </Modal.Body>
-            </Modal>
           </>
         )}
       </div>
