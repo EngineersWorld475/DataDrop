@@ -5,6 +5,7 @@ import DashProfile from '../components/DashProfile';
 import DashPost from '../components/DashPost';
 import DashUsers from '../components/DashUsers';
 import DashComments from '../components/DashComments';
+import DashboardComp from '../components/DashboardComp';
 
 const Dashboard = () => {
   const location = useLocation();
@@ -12,9 +13,7 @@ const Dashboard = () => {
   const [tab, setTab] = useState('');
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
-    console.log('....urlParams', urlParams);
     const tabFromUrl = urlParams.get('tab');
-    console.log('.....tabFormUrl', tabFromUrl);
     if (tabFromUrl) {
       setTab(tabFromUrl);
     }
@@ -32,6 +31,8 @@ const Dashboard = () => {
       {tab === 'users' && <DashUsers />}
       {/* comments */}
       {tab === 'comments' && <DashComments />}
+      {/* dashboard */}
+      {tab === 'dash' && <DashboardComp />}
     </div>
   );
 };

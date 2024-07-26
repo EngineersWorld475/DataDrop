@@ -17,10 +17,7 @@ const DashComments = () => {
         const res = await fetch(`/api/comment/getComments`);
         const data = await res.json();
         if (res.ok) {
-          setComments(data);
-          if (data.length < 9) {
-            setShowMore(false);
-          }
+          setComments(data.comments);
         }
       } catch (error) {
         console.log(error.message);
@@ -29,7 +26,7 @@ const DashComments = () => {
     if (currentUser.isAdmin) {
       fetchComments();
     }
-  }, [currentUser._id]);
+  }, [currentUser]);
 
   const handleShowMore = async () => {
     const startIndex = comments.length;
@@ -39,7 +36,7 @@ const DashComments = () => {
       );
       const data = await res.json();
       if (res.ok) {
-        setComments((prev) => [...prev, ...data]);
+        setComments((prev) => [...prev, ...data.comments]);
         if (data.length < 10) {
           setShowMore(false);
         }
@@ -124,7 +121,7 @@ const DashComments = () => {
           )}
         </>
       ) : (
-        <p> You have no posts yet!</p>
+        <p> You have no comments yet!</p>
       )}
       <Modal
         show={showModal}
