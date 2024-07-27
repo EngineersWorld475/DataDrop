@@ -21,6 +21,7 @@ import {
   deleteUserSuccess,
   signOutSuccess,
 } from '../redux/user/userSlice';
+import { Link } from 'react-router-dom';
 const DashProfile = () => {
   const { currentUser, error } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
@@ -217,6 +218,17 @@ const DashProfile = () => {
         <Button type="submit" gradientDuoTone="purpleToPink" outline>
           Update
         </Button>
+        {currentUser.isAdmin && (
+          <Link to={'/create-post'}>
+            <Button
+              type="button"
+              gradientDuoTone="greenToBlue"
+              className="w-full"
+            >
+              Create a post
+            </Button>
+          </Link>
+        )}
       </form>
       <div className="text-red-500 flex flex-row justify-between mt-5">
         <span onClick={() => setShowModal(true)} className="cursor-pointer">
