@@ -35,19 +35,20 @@ const CommentSection = ({ postId }) => {
     }
   };
 
-  useEffect(() => {
-    const getComments = async () => {
-      try {
-        const res = await fetch(`/api/comment/getPostComments/${postId}`);
-        if (res.ok) {
-          const data = await res.json();
+  const getComments = async () => {
+    try {
+      const res = await fetch(`/api/comment/getPostComments/${postId}`);
+      if (res.ok) {
+        const data = await res.json();
 
-          setComments(data);
-        }
-      } catch (error) {
-        console.log(error);
+        setComments(data);
       }
-    };
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
     getComments();
   }, [postId]);
 
@@ -86,6 +87,23 @@ const CommentSection = ({ postId }) => {
       )
     );
   };
+
+  const handleDelete = async (commentId) => {
+    try {
+      const res = await fetch(`/api/comment/deleteComment/${commentId}`, {
+        method: 'DELETE',
+      });
+      const data = await res.json();
+      if (res.ok) {
+        getComments();
+      } else {
+        console.log(data.message);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <div className="mx-auto">
       {currentUser ? (
@@ -156,6 +174,7 @@ const CommentSection = ({ postId }) => {
                 comment={comment}
                 onLike={handleLike}
                 onEdit={handleEdit}
+                onDelete={handleDelete}
               />
             );
           })}
