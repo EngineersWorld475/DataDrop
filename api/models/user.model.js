@@ -19,7 +19,7 @@ const userSchema = mongoose.Schema(
     profilePicture: {
       type: String,
       default:
-        'https://storage.needpix.com/rsynced_images/user-1808597_1280.png',
+        'https://freerangestock.com/sample/120140/business-man-profile-vector.jpg',
     },
     isAdmin: {
       type: Boolean,
