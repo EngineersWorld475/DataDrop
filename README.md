@@ -6,21 +6,35 @@ and managing blog posts.
 Features:
 
 Intuitive User Interfaces: 
+
 Developed using React.js, styled with Tailwind CSS for responsive design and Flowbite for pre-designed UI components.
+
 User Authentication: 
+
 Secure Google authentication implemented via Firebase.
+
 Image Handling: 
+
 Streamlined image upload capabilities for a seamless user experience.
+
 State Management: 
+
 Utilized Redux Toolkit to ensure smooth and predictable state transitions across the application.
+
 Real-Time Comment Sections: 
+
 Engage users with live discussions on blog posts.
+
 Post Categorization:
-Organize content for easy navigation and discovery.
+
+Organize content for easy navigation and discovery
+
 User Profile Management:
+
 Allow users to manage their profiles and blog posts effectively.
 
 Technology Stack:
+
 Frontend:
 React.js
 Tailwind CSS
